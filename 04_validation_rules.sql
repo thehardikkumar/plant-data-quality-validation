@@ -1,8 +1,9 @@
 -- MySQL 8.0+
 USE plant_dq;
 
-DELETE FROM validation_log;
-DELETE FROM validation_rules;
+SET SQL_SAFE_UPDATES = 0;  -- Workbench safe mode blocks DELETE without a key in WHERE
+DELETE FROM validation_log WHERE log_id > 0;
+DELETE FROM validation_rules WHERE rule_id <> '';
 
 INSERT INTO validation_rules (rule_id, rule_name, description, severity) VALUES
 ('R01','Duplicate tag number','Same tag number appears more than once (extra occurrences flagged)','High'),
@@ -21,7 +22,7 @@ DROP PROCEDURE IF EXISTS sp_run_validation;
 DELIMITER $$
 CREATE PROCEDURE sp_run_validation(IN p_run VARCHAR(10))
 BEGIN
-    DELETE FROM validation_log WHERE run_label = p_run;
+    DELETE FROM validation_log WHERE run_label = p_run AND log_id > 0;
 
     -- R01: duplicate tag numbers (window function; first occurrence is kept, extras flagged)
     INSERT INTO validation_log (run_label, record_id, tag_number, rule_id)
