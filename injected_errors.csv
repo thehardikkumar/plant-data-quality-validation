@@ -1,0 +1,13 @@
+error_type,rows_injected
+Missing vendor,50
+Missing material,50
+Missing design pressure,40
+Design pressure out of range,50
+Design temp out of range,20
+Tag format invalid,60
+Delivery before PO date,45
+Equipment type not allowed,40
+Material not standard,150
+Vendor not in lookup,35
+Exact duplicate rows,40
+"Same tag, different details",40
